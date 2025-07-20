@@ -42,6 +42,12 @@ def read_varint(reader: BinaryIO) -> int:
         # This matches the Go reference: result = (result << 7) | uint32(b&VarintValueMask)
         result = (result << 7) | (b & VARINT_VALUE_MASK)
         
+        # Check for uint32 overflow
+        if result > 0xFFFFFFFF:
+            raise VCDIFFError(
+                f"invalid varint at offset {start_pos}: value exceeds uint32 maximum"
+            )
+        
         # Check if continuation bit is clear (end of varint)
         if b & VARINT_CONTINUATION_BIT == 0:
             return result

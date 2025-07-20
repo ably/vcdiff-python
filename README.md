@@ -246,10 +246,26 @@ To run the comprehensive test suite against the VCDIFF test cases (requires subm
 pytest tests/test_vcdiff.py -v
 ```
 
+To run fuzz testing:
+
+```bash
+# Property-based fuzzing with Hypothesis
+pip install hypothesis
+pytest tests/test_fuzz_hypothesis.py -v
+
+# Simple mutation fuzzing
+python fuzz_simple.py 300  # 5 minutes
+
+# Coverage-guided fuzzing (requires atheris)
+pip install atheris  
+python fuzz_atheris.py -max_total_time=300
+```
+
 The test suite includes:
 - **20 general positive tests**: Valid VCDIFF files that should decode successfully
 - **33 targeted negative tests**: Invalid VCDIFF files that should be rejected with appropriate errors
 - **32 targeted positive tests**: Specific feature validation tests
+- **Fuzz testing**: Property-based and mutation-based robustness testing
 - **Total**: 85 test cases with 100% pass rate
 
 ### Test Results
