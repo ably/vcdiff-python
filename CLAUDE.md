@@ -77,6 +77,18 @@ pytest -v                 # Verbose output
 pytest --cov=vcdiff      # With coverage
 ```
 
+### Fuzz Testing
+```bash
+# Property-based testing with Hypothesis
+pytest tests/test_fuzz_hypothesis.py -v
+
+# Simple mutation fuzzing (5 minutes)
+python fuzz_simple.py 300
+
+# Coverage-guided fuzzing with Atheris (requires: pip install atheris)
+python fuzz_atheris.py -max_total_time=300
+```
+
 ### Code Quality
 ```bash
 black .                   # Format code
