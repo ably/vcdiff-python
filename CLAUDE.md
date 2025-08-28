@@ -159,7 +159,6 @@ Uses the same `vcdiff-tests` submodule as the Go implementation:
 ### Python Versions
 - Minimum: Python 3.8
 - Tested: Python 3.8, 3.9, 3.10, 3.11, 3.12
-- Dependencies: `click>=8.0.0` (CLI only)
 
 ## Limitations (Same as Go Implementation)
 

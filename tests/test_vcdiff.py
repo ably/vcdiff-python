@@ -11,8 +11,8 @@ import pytest
 # Add the parent directory to the path so we can import vcdiff
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-import vcdiff
-from vcdiff.exceptions import VCDIFFError
+import vcdiff_decoder as vcdiff
+from vcdiff_decoder.exceptions import VCDIFFError
 
 
 class TestVCDIFFSharedTests:
@@ -201,7 +201,7 @@ class TestVCDIFFBasic:
     
     def test_import(self):
         """Test that the module can be imported"""
-        import vcdiff
+        import vcdiff_decoder as vcdiff
         assert hasattr(vcdiff, 'decode')
         assert hasattr(vcdiff, 'Decoder')
     
