@@ -4,16 +4,22 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="vcdiff-py",
+    name="ably-vcdiff-decoder",
     version="1.0.0",
     author="Ably Realtime Limited",
+    author_email="support@ably.io",
     description="Python implementation of VCDIFF (RFC 3284) delta compression format",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/ably/vcdiff-py",
+    project_urls={
+        "Bug Reports": "https://github.com/ably/vcdiff-py/issues",
+        "Source": "https://github.com/ably/vcdiff-py",
+        "Documentation": "https://github.com/ably/vcdiff-py#readme",
+    },
     packages=find_packages(),
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
@@ -27,6 +33,7 @@ setup(
         "Topic :: System :: Archiving :: Compression",
         "Topic :: Utilities",
     ],
+    keywords="vcdiff, delta, compression, rfc3284, ably",
     python_requires=">=3.8",
     install_requires=[
         "click>=8.0.0",
