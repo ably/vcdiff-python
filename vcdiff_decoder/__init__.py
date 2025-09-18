@@ -28,7 +28,7 @@ from .exceptions import (
 )
 from .types import InstructionType
 
-__version__ = "0.1.0a1"
+__version__ = "0.1.0"
 __all__ = [
     "Decoder",
     "decode",
