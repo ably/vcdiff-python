@@ -1,6 +1,5 @@
 """Variable-length integer encoding/decoding - RFC 3284 Section 2"""
 
-import io
 from typing import BinaryIO
 
 from .types import VARINT_CONTINUATION_BIT, VARINT_VALUE_MASK

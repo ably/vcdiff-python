@@ -4,9 +4,7 @@ A Python implementation of a VCDIFF (RFC 3284) decoder library and command-line 
 
 ## Overview
 
-This repository contains both a Python library and a command-line interface (CLI) for working with VCDIFF delta files. The library provides a VCDIFF decoder that can decode delta files created according to RFC 3284 - The VCDIFF Generic Differencing and Compression Data Format. VCDIFF is a format for expressing one data stream as a variant of another data stream, commonly used for binary differencing, compression, and patch applications.
-
-The CLI tool can be used to apply VCDIFF deltas to reconstruct files, as well as to inspect and analyze the structure of VCDIFF delta files.
+The library provides a VCDIFF decoder that can decode delta files created according to RFC 3284 - The VCDIFF Generic Differencing and Compression Data Format. VCDIFF is a format for expressing one data stream as a variant of another data stream, commonly used for binary differencing, compression, and patch applications.
 
 ## Features
 
@@ -35,13 +33,13 @@ The CLI tool can be used to apply VCDIFF deltas to reconstruct files, as well as
 ## Installation
 
 ```bash
-pip install vcdiff-py
+pip install vcdiff
 ```
 
 ### Development Installation
 
 ```bash
-pip install -e .[dev]
+poetry install
 ```
 
 ### Cloning with Test Suite
@@ -69,7 +67,7 @@ git submodule update --remote
 ### Library Usage
 
 ```python
-import vcdiff
+import vcdiff_decoder
 
 # Read the source file
 with open("original.txt", "rb") as f:
@@ -81,30 +79,10 @@ with open("changes.vcdiff", "rb") as f:
 
 # Apply the delta to reconstruct the target
 try:
-    result = vcdiff.decode(source, delta_data)
+    result = vcdiff_decoder.decode(source, delta_data)
     print(f"Decoded result: {result}")
-except vcdiff.VCDIFFError as e:
+except vcdiff_decoder.VCDIFFError as e:
     print(f"Decoding failed: {e}")
-```
-
-### CLI Usage
-
-Apply a VCDIFF delta:
-
-```bash
-vcdiff apply -b source.txt -d changes.vcdiff -o result.txt
-```
-
-Inspect a VCDIFF delta file:
-
-```bash
-vcdiff parse -d changes.vcdiff
-```
-
-Analyze a VCDIFF delta with source context:
-
-```bash
-vcdiff analyze -b source.txt -d changes.vcdiff
 ```
 
 ## API Reference
@@ -156,58 +134,6 @@ The decoder provides detailed error messages for various failure conditions:
 - `CorruptedDataError`: Data corruption detected
 - `InvalidChecksumError`: Checksum validation failure
 
-## Command-Line Interface
-
-The CLI provides three main commands:
-
-### `apply` - Apply VCDIFF Delta
-
-Applies a VCDIFF delta to a source file to produce the target file.
-
-```bash
-vcdiff apply -b <source-file> -d <delta-file> -o <output-file>
-```
-
-**Options:**
-- `-b, --base`: Source/base file path (required)
-- `-d, --delta`: VCDIFF delta file path (required)
-- `-o, --output`: Output file path (optional, defaults to stdout)
-
-### `parse` - Inspect VCDIFF Structure
-
-Parses and displays the internal structure of a VCDIFF delta file.
-
-```bash
-vcdiff parse -d <delta-file>
-```
-
-**Options:**
-- `-d, --delta`: VCDIFF delta file path (required)
-
-**Output includes:**
-- Header information (magic bytes, version, flags)
-- Window details (source segments, target length, checksums)
-- Instruction breakdown (ADD, COPY, RUN operations)
-- Address cache usage
-- Data section analysis
-
-### `analyze` - Analyze with Source Context
-
-Analyzes a VCDIFF delta file with access to the source data, providing additional insights.
-
-```bash
-vcdiff analyze -b <source-file> -d <delta-file>
-```
-
-**Options:**
-- `-b, --base`: Source/base file path (required)
-- `-d, --delta`: VCDIFF delta file path (required)
-
-**Additional features:**
-- Validates actual address references
-- Shows source data context for COPY operations
-- Provides hexdump-style output for referenced data
-
 ## Testing
 
 ### Prerequisites
@@ -231,19 +157,19 @@ sudo apt-get install xdelta3
 To run the Python unit tests:
 
 ```bash
-pytest
+poetry run pytest
 ```
 
 To run tests with coverage:
 
 ```bash
-pytest --cov=vcdiff tests/
+poetry run pytest --cov=vcdiff tests/
 ```
 
 To run the comprehensive test suite against the VCDIFF test cases (requires submodule):
 
 ```bash
-pytest tests/test_vcdiff.py -v
+poetry run pytest tests/test_vcdiff.py -v
 ```
 
 The test suite includes:
@@ -316,8 +242,6 @@ For new features, please:
 ## Requirements
 
 - **Python**: 3.8 or higher
-- **Dependencies**: 
-  - `click>=8.0.0` (for CLI functionality)
 - **Development Dependencies**:
   - `pytest>=7.0.0`
   - `pytest-cov>=4.0.0`
