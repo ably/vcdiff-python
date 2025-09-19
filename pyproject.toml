@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "vcdiff-decoder"
-version = "0.1.0a1"
+version = "0.1.0"
 description = "Python implementation of VCDIFF (RFC 3284) delta compression format"
 readme = "README.md"
 license = "Apache-2.0"

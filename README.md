@@ -33,7 +33,7 @@ The library provides a VCDIFF decoder that can decode delta files created accord
 ## Installation
 
 ```bash
-pip install vcdiff
+pip install vcdiff-decoder
 ```
 
 ### Development Installation
@@ -47,7 +47,7 @@ poetry install
 This repository includes the VCDIFF test suite as a git submodule. To clone the repository with all test cases:
 
 ```bash
-git clone --recursive https://github.com/ably/vcdiff-py.git
+git clone --recursive https://github.com/ably/vcdiff-python.git
 ```
 
 If you've already cloned the repository without the submodule, initialize it:
