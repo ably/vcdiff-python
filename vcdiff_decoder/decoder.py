@@ -8,7 +8,7 @@ from .types import (
     VCDIFF_MAGIC, VCDIFF_VERSION, MINIMUM_FILE_SIZE,
     VCD_DECOMPRESS, VCD_CODETABLE, VCD_APPHEADER,
     VCD_SOURCE, VCD_TARGET, VCD_ADLER32,
-    NEAR_CACHE_SIZE, SAME_CACHE_SIZE
+    NEAR_CACHE_SIZE, SAME_CACHE_BLOCKS
 )
 from .exceptions import (
     VCDIFFError, InvalidMagicError, InvalidVersionError, InvalidFormatError,
@@ -71,7 +71,7 @@ class Decoder:
             VCDIFFError: If the window cannot be decoded
         """
         # Initialize address cache
-        address_cache = AddressCache(NEAR_CACHE_SIZE, SAME_CACHE_SIZE)
+        address_cache = AddressCache(NEAR_CACHE_SIZE, SAME_CACHE_BLOCKS)
         address_cache.reset(window.address_section)
         
         # Create target buffer
@@ -281,7 +281,7 @@ def parse_delta(delta: Union[bytes, bytearray]) -> ParsedDelta:
         parsed.windows.append(window)
         
         # Create address cache for this window
-        address_cache = AddressCache(NEAR_CACHE_SIZE, SAME_CACHE_SIZE)
+        address_cache = AddressCache(NEAR_CACHE_SIZE, SAME_CACHE_BLOCKS)
         address_cache.reset(window.address_section)
         
         # Parse instructions using the instruction section and data section

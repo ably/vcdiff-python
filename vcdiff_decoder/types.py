@@ -38,9 +38,9 @@ ADD_INSTRUCTION_MAX = 161  # ADD instructions: 18-161
 COPY_INSTRUCTION_MIN = 162 # COPY instructions: 162-255
 COPY_INSTRUCTION_MAX = 255 # COPY instructions: 162-255
 
-# Address cache configuration - RFC 3284 Section 5.3
-NEAR_CACHE_SIZE = 4         # Size of "near" address cache
-SAME_CACHE_SIZE = 3 * 256   # Size of "same" address cache
+# Address cache configuration - RFC 3284 Section 5.1
+NEAR_CACHE_SIZE = 4         # s_near: number of slots in the "near" address cache
+SAME_CACHE_BLOCKS = 3       # s_same: the "same" address cache holds s_same * 256 slots
 INSTRUCTION_TABLE_SIZE = 256 # Size of instruction code table
 
 # File format validation constants

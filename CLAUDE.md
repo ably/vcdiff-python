@@ -15,14 +15,14 @@ This is a complete Python implementation of VCDIFF (RFC 3284) delta compression 
 - **Address Cache**: Complete address cache implementation for COPY instructions
 - **Error Handling**: Comprehensive validation with detailed error messages
 - **CLI**: Full command-line interface with apply, parse, and analyze commands
-- **Testing**: Passes all 85 test cases from the shared vcdiff-tests submodule
+- **Testing**: Passes all 88 test cases from the shared vcdiff-tests submodule
 
 ## Test Results
 
 - **General Positive Tests**: 20/20 passed ✅
 - **Targeted Negative Tests**: 33/33 passed ✅
-- **Targeted Positive Tests**: 32/32 passed ✅
-- **Total**: 85/85 test cases passed (100% success rate)
+- **Targeted Positive Tests**: 35/35 passed ✅
+- **Total**: 88/88 test cases passed (100% success rate)
 
 ## Architecture
 
@@ -131,8 +131,8 @@ Comprehensive error hierarchy with specific error types:
 
 ### Address Cache Implementation
 Full implementation of RFC 3284 Section 5.3 address cache with:
-- Near cache (4 entries, LRU replacement)
-- Same cache (768 entries, direct indexing)
+- Near cache (s_near = 4 entries, circular replacement, zero filled per window)
+- Same cache (s_same = 3 blocks, 768 entries, written at `addr % 768` and read at `(mode - 6) * 256 + byte`)
 - Multiple addressing modes (SELF, HERE, near, same)
 
 ### Instruction Execution

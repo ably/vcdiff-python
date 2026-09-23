@@ -11,18 +11,19 @@ from .exceptions import VCDIFFError
 class AddressCache:
     """Manages address encoding/decoding for COPY instructions"""
     
-    def __init__(self, near_size: int, same_size: int):
+    def __init__(self, near_size: int, same_blocks: int):
         """Initialize address cache with specified sizes
         
         Args:
-            near_size: Size of the "near" address cache (typically 4)
-            same_size: Size of the "same" address cache (typically 3 * 256)
+            near_size: s_near, the number of slots in the "near" cache (typically 4)
+            same_blocks: s_same, the number of 256-slot blocks in the "same" cache
+                (typically 3, so the cache holds 768 addresses)
         """
         self.near_size = near_size
-        self.same_size = same_size
+        self.same_blocks = same_blocks
         self.near: List[int] = [0] * near_size
         self.next_near_slot = 0
-        self.same: List[int] = [0] * (same_size * 256)
+        self.same: List[int] = [0] * (same_blocks * 256)
         self.address_stream: BinaryIO = io.BytesIO()
     
     def reset(self, addresses: bytes) -> None:
@@ -54,7 +55,7 @@ class AddressCache:
             The decoded address
             
         Raises:
-            VCDIFFError: If the addressing mode is invalid or cache is uninitialized
+            VCDIFFError: If the addressing mode is invalid
         """
         # Validate addressing mode
         if mode > 8:
@@ -72,19 +73,18 @@ class AddressCache:
         else:
             # Near cache or same cache modes
             if mode - 2 < self.near_size:
-                # Near cache
+                # Near cache. Both caches are zero filled at the start of a window
+                # (RFC 3284 section 5.1), so 0 is an ordinary cached address here.
                 cache_index = mode - 2
-                if self.near[cache_index] == 0:
-                    raise VCDIFFError(f"near cache slot {cache_index} is uninitialized")
                 offset = read_varint(self.address_stream)
                 addr = self.near[cache_index] + offset
             else:
                 # Same cache
                 m = mode - (2 + self.near_size)
-                if m >= self.same_size:
+                if m >= self.same_blocks:
                     raise VCDIFFError(
                         f"same cache mode {mode} exceeds available slots "
-                        f"(max {2 + self.near_size + self.same_size - 1})"
+                        f"(max {2 + self.near_size + self.same_blocks - 1})"
                     )
                 
                 byte_data = self.address_stream.read(1)
@@ -107,5 +107,6 @@ class AddressCache:
             self.near[self.next_near_slot] = address
             self.next_near_slot = (self.next_near_slot + 1) % self.near_size
         
-        if self.same_size > 0:
-            self.same[address % (self.same_size * 256)] = address
+        if self.same_blocks > 0:
+            # RFC 3284 section 5.1: the slot with index addr % (s_same * 256)
+            self.same[address % len(self.same)] = address
