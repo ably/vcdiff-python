@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [0.2.0](https://github.com/ably/vcdiff-python/tree/v0.2.0) (2026-09-23)
 
 ### Fixed
 
@@ -14,6 +14,16 @@
   above 768 was stored where no read could reach it and resolved to address 0, silently producing
   the wrong output for deltas that use same modes
   [#692](https://github.com/ably/ably-pubsub-python/issues/692)
+
+### Breaking changes
+
+These affect only code that imports the internal modules directly. The public API exported from
+`vcdiff_decoder` (`decode`, `Decoder`, `parse_delta` and the exception types) is unchanged.
+
+- `vcdiff_decoder.types.SAME_CACHE_SIZE` (`3 * 256`) is removed and replaced by
+  `SAME_CACHE_BLOCKS` (`3`), the RFC 3284 `s_same` value: the number of 256-slot blocks in the same
+  cache rather than a slot count. Code that imported `SAME_CACHE_SIZE` must switch to
+  `SAME_CACHE_BLOCKS` (multiply by 256 if you need the number of slots)
 
 ## [0.1.0](https://github.com/ably/vcdiff-python/tree/v0.1.0) (2025-09-16)
 
