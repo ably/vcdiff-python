@@ -1,5 +1,20 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- The near address cache no longer rejects a slot holding address 0. RFC 3284 section 5.1 zero
+  fills both caches at the start of a window, so 0 is an ordinary cached address, and a COPY
+  addressed against it (a copy from the start of the source, for instance) raised
+  "near cache slot N is uninitialized" instead of decoding
+  [#692](https://github.com/ably/ably-pubsub-python/issues/692)
+- The same address cache is now sized and indexed consistently. It was allocated with
+  `s_same * 256 * 256` slots while being read at `(mode - 6) * 256 + byte`, so every address at or
+  above 768 was stored where no read could reach it and resolved to address 0, silently producing
+  the wrong output for deltas that use same modes
+  [#692](https://github.com/ably/ably-pubsub-python/issues/692)
+
 ## [0.1.0](https://github.com/ably/vcdiff-python/tree/v0.1.0) (2025-09-16)
 
 This is the initial release of the VCDIFF (RFC 3284) decoder library for Python. 
